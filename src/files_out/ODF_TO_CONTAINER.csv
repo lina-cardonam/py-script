@@ -1,0 +1,5 @@
+relation;parentClassName;parentName;sourceClassName;sourceName;parentClassName;parentName;targetClassName;targetName
+endpointA;ODF;TA01;OpticalPort;001-OUT;WireContainer;144F-Paita;OpticalLink;F-001
+endpointA;ODF;TA01;OpticalPort;002-OUT;WireContainer;144F-Paita;OpticalLink;F-002
+endpointA;ODF;TA01;OpticalPort;003-OUT;WireContainer;144F-Paita;OpticalLink;F-003
+endpointA;ODF;TA01;OpticalPort;004-OUT;WireContainer;144F-Paita;OpticalLink;F-004

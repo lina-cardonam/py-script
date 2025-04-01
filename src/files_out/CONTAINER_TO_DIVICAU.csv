@@ -1,0 +1,5 @@
+relation;parentClassName;parentName;sourceClassName;sourceName;parentClassName;parentName;parentClassName;parentName;targetClassName;targetName
+endpointB;WireContainer;144F-Paita;OpticalLink;F-001;Divicau;D01;FiberSplitter;SP01;OpticalPort;001-IN
+endpointB;WireContainer;144F-Paita;OpticalLink;F-002;Divicau;D01;FiberSplitter;SP02;OpticalPort;001-IN
+endpointB;WireContainer;144F-Paita;OpticalLink;F-003;Divicau;D01;FiberSplitter;SP03;OpticalPort;001-IN
+endpointB;WireContainer;144F-Paita;OpticalLink;F-004;Divicau;D01;FiberSplitter;SP04;OpticalPort;001-IN
