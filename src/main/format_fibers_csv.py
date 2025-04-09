@@ -2,7 +2,7 @@ import pandas as pd;
 from collections import OrderedDict;
 
 ##File that pandas'll read
-df = pd.read_excel("src/files_in/MODELO.xlsx", engine="openpyxl", header=None);
+df = pd.read_excel("src/files_in/CONEXIONES CB-D01.xlsx", engine="openpyxl", header=None);
 ##Don't leave cells with value=NaN
 df.ffill(inplace=True);
 
@@ -103,7 +103,7 @@ class obj_general_builder:
                            self.nap, self.splitter_secundario)
 
 ##Filter what I wanna read
-data = df.iloc[3:147, :13];
+data = df.iloc[3:337, :13];
 
 ##Remove duplicates
 unique_rows = list(OrderedDict.fromkeys(map(tuple, data.values)));
@@ -111,9 +111,10 @@ unique_rows = list(OrderedDict.fromkeys(map(tuple, data.values)));
 objs = [];
 
 for row in unique_rows:
+    aux = row[0][:2] + " " + row[0][2:]
     current_obj = (
         obj_general_builder()
-        .set_n_odf(row[0])
+        .set_n_odf(aux)
         .set_puerto_odf(row[1])
         .set_cable_alimentador(row[2])
         .set_capacidad_alimentador(row[3])
@@ -145,4 +146,4 @@ data = [(
 
 df = pd.DataFrame(data, columns=headers)
 
-df.to_csv("src/files_out/MODELO.csv", index=False, encoding="utf-8", sep=";")
+df.to_csv("src/files_out_1/CONEXIONES CB-D01.csv", index=False, encoding="utf-8", sep=";")

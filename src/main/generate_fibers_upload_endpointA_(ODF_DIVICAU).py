@@ -1,7 +1,7 @@
 import pandas as pd
 from collections import OrderedDict;
 
-df = pd.read_csv("src/files_out/MODELO.csv", sep=";")
+df = pd.read_csv("/home/lcardona/projects/mi-fibra/py-script/src/files_out_1/CONEXIONES CB-D01.csv", sep=";")
 
 ##Read 'til SPLITTER PRIMARIO
 data = df.iloc[:, :7]  
@@ -85,17 +85,19 @@ RELATION = "endpointA";
 PARENT_SOURCE_CLASSNAME = "ODF";
 SOURCE_CLASSNAME = "OpticalPort";
 PARENT_TARGET_CLASSNAME = "WireContainer";
-PARENT_TARGET_NAME = "144F-Paita";
+PARENT_TARGET_NAME = "144";
 TARGET_CLASSNAME = "OpticalLink";
 
 objs = [];
 
 def format_port(port):
-    num = int(port[1:])
-    return f"{num:03d}-OUT"
+    print (port)
+    port = str(port)
+    num = int(port)
+    return f"{num:03d}-front"
 
 def format_fiber(fiber):
-    num = int(fiber[1:])
+    num = int(fiber)
     return f"F-{num:03d}"
 
 for row in unique_rows:
@@ -126,4 +128,4 @@ data = [(
 
 df = pd.DataFrame(data, columns=headers)
 
-df.to_csv("src/files_out/ODF_TO_CONTAINER.csv", index=False, encoding="utf-8", sep=";")
+df.to_csv("src/files_out_1/ODF_TO_CONTAINER.csv", index=False, encoding="utf-8", sep=";")

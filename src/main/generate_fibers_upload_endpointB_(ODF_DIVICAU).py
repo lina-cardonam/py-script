@@ -1,7 +1,7 @@
 import pandas as pd
 from collections import OrderedDict;
 
-df = pd.read_csv("src/files_out/MODELO.csv", sep=";")
+df = pd.read_csv("/home/lcardona/projects/mi-fibra/py-script/src/files_out_1/CONEXIONES CB-D01.csv", sep=";")
 
 ##Read 'til SPLITTER PRIMARIO
 data = df.iloc[:, :7]  
@@ -96,7 +96,7 @@ class InventoryObjDTOResponse:
 ##Constants
 RELATION = "endpointB";
 PARENT_SOURCE_CLASSNAME = "WireContainer";
-PARENT_SOURCE_NAME = "144F-Paita";
+PARENT_SOURCE_NAME = "144";
 SOURCE_CLASSNAME = "OpticalLink";
 TARGET_CLASSNAME = "OpticalPort";
 TARGET_NAME = "001-IN";
@@ -107,10 +107,14 @@ objs = [];
 
 
 def format_fiber(fiber):
-    num = int(fiber[1:])
+    num = int(fiber)
     return f"F-{num:03d}"
 
 for row in unique_rows:
+    aux = row[0][:2]
+    num = int(row[0][2:])
+    zoneNum = aux + " " + f"{num:03d}"
+    splittAux = row[6].split("D")[1]
     objs.append(
         InventoryObjDTOResponse.Builder()
             .relation(RELATION)
@@ -119,9 +123,9 @@ for row in unique_rows:
             .sourceClassName(SOURCE_CLASSNAME)
             .sourceName(format_fiber(row[4]))
             .targetParentClassName1(CLASS_DIVICAU)
-            .targetParentName1(row[5])
+            .targetParentName1(zoneNum + "-" + row[5])
             .targetParentClassName2(CLASS_SPLITTER)
-            .targetParentName2(row[6])
+            .targetParentName2(splittAux)
             .targetClassName(TARGET_CLASSNAME)
             .targetName(TARGET_NAME)
             .build()
@@ -152,4 +156,4 @@ data = [
 
 df = pd.DataFrame(data, columns=headers)
 
-df.to_csv("src/files_out/CONTAINER_TO_DIVICAU.csv", index=False, encoding="utf-8", sep=";")
+df.to_csv("src/files_out_1/CONTAINER_TO_DIVICAU.csv", index=False, encoding="utf-8", sep=";")

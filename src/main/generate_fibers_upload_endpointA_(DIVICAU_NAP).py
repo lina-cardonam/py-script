@@ -1,9 +1,9 @@
 import pandas as pd
 from collections import OrderedDict;
 
-df = pd.read_csv("src/files_out/MODELO.csv", sep=";")
+df = pd.read_csv("/home/lcardona/projects/mi-fibra/py-script/src/files_out_1/CONEXIONES CB-D01.csv", sep=";")
 
-data = df.iloc[:, 5:]
+data = df.iloc[:, :] 
 
 ##Remove duplicates
 unique_rows = list(OrderedDict.fromkeys(map(tuple, data.values)));
@@ -113,35 +113,41 @@ PARENT_SOURCE_CLASSNAME_2 = "FiberSplitter";
 SOURCE_CLASSNAME = "OpticalPort";
 
 PARENT_TARGET_CLASSNAME_1 = "Distrito";
-PARENT_TARGET_NAME_1 = "Paita";
+PARENT_TARGET_NAME_1 = "Chimbote";
 PARENT_TARGET_CLASSNAME_2 = "WireContainer";
 TARGET_CLASSNAME = "OpticalLink";
 
 objs = [];
 
-def format_port(port):
-    return f"{port:03d}-OUT"
+def format_port(port): 
+    line = port.split("P")
+    nu = int(line[1])
+    return f"{nu:03d}-OUT"
 
 def format_fiber(fiber):
     num = int(fiber[1:])
     return f"F-{num:03d}"
 
 for row in unique_rows:
+    aux = row[0][:2]
+    num = int(row[0][2:])
+    zoneNum = aux + " " + f"{num:03d}"
+    splittAux = row[6].split("D")[1]
     objs.append(
         InventoryObjDTOResponse.Builder()
             .relation(RELATION)
             .sourceParentClassName1(PARENT_SOURCE_CLASSNAME_1)
-            .sourceParentName1(row[0])
+            .sourceParentName1(zoneNum + "-" + row[5])
             .sourceParentClassName2(PARENT_SOURCE_CLASSNAME_2)
-            .sourceParentName2(row[1])
+            .sourceParentName2(splittAux)
             .sourceClassName(SOURCE_CLASSNAME)
-            .sourceName(format_port(row[2]))
+            .sourceName(format_port(row[7]))
             .targetParentClassName1(PARENT_TARGET_CLASSNAME_1)
             .targetParentName1(PARENT_TARGET_NAME_1)
             .targetParentClassName2(PARENT_TARGET_CLASSNAME_2)
-            .targetParentName2(row[4] + "-Paita")
+            .targetParentName2(str(row[8]) + "-" + str(row[9]))
             .targetClassName(TARGET_CLASSNAME)
-            .targetName(format_fiber(row[5]))
+            .targetName(format_fiber(row[10]))
             .build()
     );
     
@@ -172,4 +178,4 @@ data = [
 
 df = pd.DataFrame(data, columns=headers)
 
-df.to_csv("src/files_out/DIVICAU_TO_CONTAINER.csv", index=False, encoding="utf-8", sep=";")
+df.to_csv("src/files_out_1/DIVICAU_TO_CONTAINER.csv", index=False, encoding="utf-8", sep=";")

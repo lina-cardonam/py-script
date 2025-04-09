@@ -1,9 +1,9 @@
 import pandas as pd
 from collections import OrderedDict;
 
-df = pd.read_csv("src/files_out/MODELO.csv", sep=";")
+df = pd.read_csv("/home/lcardona/projects/mi-fibra/py-script/src/files_out_1/CONEXIONES CB-D01.csv", sep=";")
 
-data = df.iloc[:, 5:]
+data = df.iloc[:, :] 
 
 ##Remove duplicates
 unique_rows = list(OrderedDict.fromkeys(map(tuple, data.values)));
@@ -109,7 +109,7 @@ class InventoryObjDTOResponse:
 RELATION = "endpointB";
 
 PARENT_SOURCE_CLASSNAME_1 = "Distrito";
-PARENT_SOURCE_NAME_1 = "Paita";
+PARENT_SOURCE_NAME_1 = "Chimbote";
 PARENT_SOURCE_CLASSNAME_2 = "WireContainer";
 SOURCE_CLASSNAME = "OpticalLink";
 
@@ -125,19 +125,23 @@ def format_fiber(fiber):
     return f"F-{num:03d}"
 
 for row in unique_rows:
+    aux = row[0][:2]
+    num = int(row[0][2:])
+    zoneNum = aux + " " + f"{num:03d}"
+    splittAux = row[6].split("D")[1]
     objs.append(
         InventoryObjDTOResponse.Builder()
             .relation(RELATION)
             .sourceParentClassName1(PARENT_SOURCE_CLASSNAME_1)
             .sourceParentName1(PARENT_SOURCE_NAME_1)
             .sourceParentClassName2(PARENT_SOURCE_CLASSNAME_2)
-            .sourceParentName2(row[4] + "-Paita")
+            .sourceParentName2(str(row[8]) + "-" + str(row[9]))
             .sourceClassName(SOURCE_CLASSNAME)
-            .sourceName(format_fiber(row[5]))
+            .sourceName(format_fiber(row[10]))
             .targetParentClassName1(PARENT_TARGET_CLASSNAME_1)
-            .targetParentName1(row[6])
+            .targetParentName1(zoneNum + "-" + row[5] + "-" + f"{int(row[11]):02d}")
             .targetParentClassName2(PARENT_TARGET_CLASSNAME_2)
-            .targetParentName2(row[7])
+            .targetParentName2(row[12])
             .targetClassName(TARGET_CLASSNAME)
             .targetName(TARGET_NAME)
             .build()
@@ -170,4 +174,4 @@ data = [
 
 df = pd.DataFrame(data, columns=headers)
 
-df.to_csv("src/files_out/CONTAINER_NAP.csv", index=False, encoding="utf-8", sep=";")
+df.to_csv("src/files_out_1/CONTAINER_NAP.csv", index=False, encoding="utf-8", sep=";")
